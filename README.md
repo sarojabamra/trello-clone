@@ -1,16 +1,135 @@
-# React + Vite
+# Trello Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Trello clone built with React and Firebase. It allows users to create boards, add lists inside boards, create cards within lists and manage cards using a drag-and-drop interface.
 
-Currently, two official plugins are available:
+## Deployment
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Deployment link: 
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Email/password and Google authentication
+* Dashboard to view all boards
+* Create and delete boards
+* Create, edit, and delete lists
+* Create, edit, and delete cards
+* Drag and drop cards between lists
+* Responsive layout
+* Firebase Firestore for storing application data
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* React + Vite
+* Firebase Authentication/Firestore
+* Tailwind CSS
+* @dnd-kit 
+* Vercel for deployment
+
+## Project Structure
+
+```text
+src/
+├── assets/
+├── components/
+│   ├── boards/
+│   ├── cards/
+│   ├── common/
+│   ├── layout/
+│   └── lists/
+├── firebase/
+│   ├── firebase.js
+│   └── firestoreService.js
+├── pages/
+│   ├── BoardPage.jsx
+│   ├── Dashboard.jsx
+│   ├── Login.jsx
+│   ├── Signup.jsx
+│   └── NotFound.jsx
+├── services/
+|   ├── boardService.js
+|   ├── cardService.js
+|   ├── listService.js
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+### Firebase
+
+`src/firebase/firebase.js` contains the Firebase configuration and initializes Firebase Authentication and Firestore.
+
+`src/firebase/firestoreService.js` contains the reusable Firestore operations used throughout the project.
+
+The `services` folder contains functions specific to different parts of the application, such as boards, lists, and cards.
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+* Node.js
+* npm
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://git.beehyv.com/saroja.bamra/trello-clone
+```
+
+Go into the project directory:
+
+```bash
+cd trello-clone
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+### Firebase Setup
+
+Create a Firebase project and enable:
+
+* Authentication
+
+  * Email/Password
+  * Google
+* Firestore Database
+
+Create a `.env` file in the root of the project and add your Firebase configuration:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+Make sure `.env` is included in `.gitignore`.
+
+### Run the Project
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at the local URL shown in the terminal.
+
+## Screenshots
+
+![Login Page](./screenshots/login.png)
+![Sign Up Page](./screenshots/signup.png)
+
+### Dashboard
+![Dashboard](./screenshots/dashboard.png)
+
+### Board
+![Board](./screenshots/board.png)
+
