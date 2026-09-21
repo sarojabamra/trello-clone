@@ -25,35 +25,6 @@ Deployment link:
 * @dnd-kit 
 * Vercel for deployment
 
-## Project Structure
-
-```text
-src/
-├── assets/
-├── components/
-│   ├── boards/
-│   ├── cards/
-│   ├── common/
-│   ├── layout/
-│   └── lists/
-├── firebase/
-│   ├── firebase.js
-│   └── firestoreService.js
-├── pages/
-│   ├── BoardPage.jsx
-│   ├── Dashboard.jsx
-│   ├── Login.jsx
-│   ├── Signup.jsx
-│   └── NotFound.jsx
-├── services/
-|   ├── boardService.js
-|   ├── cardService.js
-|   ├── listService.js
-├── App.jsx
-├── main.jsx
-└── index.css
-```
-
 ### Firebase
 
 `src/firebase/firebase.js` contains the Firebase configuration and initializes Firebase Authentication and Firestore.
