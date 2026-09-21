@@ -7,11 +7,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import {
-  MoreHorizontal,
-  Star,
-  Zap,
-} from "lucide-react";
+import { MoreHorizontal, Star, Zap } from "lucide-react";
 import { RiBarChart2Line } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -288,28 +284,28 @@ function BoardPage({ user, onBoardDataRefresh }) {
 
   return (
     <div className="min-h-screen bg-linear-to-r from-blue-700 via-blue-600 to-cyan-500 text-slate-800">
-      <header className="  bg-slate-600/50 px-3 py-3 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-[1800px] items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="flex items-center gap-2">
-              <h1 className="-ms-1 truncate text-xl font-bold text-white">
+      <header className="bg-slate-600/50 px-3 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-[1800px] items-center justify-between gap-3">
+          <div className="flex min-w-0 flex-1 items-center">
+            <div className="flex min-w-0 items-center gap-2">
+              <h1 className="-ms-1 truncate text-lg font-bold text-white sm:text-xl">
                 {boardName || "New Board"}
               </h1>
 
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-white transition hover:bg-white/10 hover:text-white"
+                className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-white transition hover:bg-white/10"
                 aria-label="Board options"
               >
-                <RiBarChart2Line className="rotate-180" size={20} />
-                <IoIosArrowDown size={18} />
+                <RiBarChart2Line className="rotate-180" size={19} />
+                <IoIosArrowDown size={17} />
               </button>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 text-white">
+          <div className="flex shrink-0 items-center gap-1 text-white">
             {user && (
-              <div className="group relative mx-1 flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700">
+              <div className="group relative mx-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700">
                 {user.name
                   ?.split(" ")
                   .filter(Boolean)
@@ -317,32 +313,56 @@ function BoardPage({ user, onBoardDataRefresh }) {
                   .map((part) => part[0]?.toUpperCase())
                   .join("") || "U"}
 
-                <span className="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-[10px] text-white opacity-0 shadow-md transition group-hover:opacity-100">
+                <span className="pointer-events-none absolute top-full left-1/2 z-50 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-[10px] text-white opacity-0 shadow-md transition group-hover:opacity-100">
                   {user.name || "User"}
                 </span>
               </div>
             )}
-            <button className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10">
+
+            <button
+              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 sm:flex"
+              aria-label="Integrations"
+            >
               <LuPlug size={18} />
             </button>
-            <button className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10">
+
+            <button
+              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 md:flex"
+              aria-label="Automation"
+            >
               <Zap size={18} />
             </button>
-            <button className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10">
+
+            <button
+              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 sm:flex"
+              aria-label="Filter"
+            >
               <MdFilterList size={20} />
             </button>
-            <button className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10">
+
+            <button
+              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 lg:flex"
+              aria-label="Favorite"
+            >
               <Star size={18} />
             </button>
-            <button className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10">
+
+            <button
+              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 md:flex"
+              aria-label="Members"
+            >
               <FiUsers size={18} />
             </button>
 
-            <button className="inline-flex mx-1 items-center text-black gap-2 rounded-md bg-slate-300 hover:bg-white px-3 py-1.5 text-sm font-medium transition">
-              <BsPersonPlus size={18} />
-              Share
+            <button className="mx-1 inline-flex items-center gap-1.5 rounded-md bg-slate-300 px-2.5 py-1.5 text-sm font-medium text-black transition hover:bg-white sm:px-3">
+              <BsPersonPlus size={17} />
+              <span className="hidden sm:inline">Share</span>
             </button>
-            <button className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10">
+
+            <button
+              className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10"
+              aria-label="More options"
+            >
               <MoreHorizontal size={18} />
             </button>
           </div>
@@ -354,14 +374,16 @@ function BoardPage({ user, onBoardDataRefresh }) {
           <Loader textColor="white" message="Loading board details..." />
         ) : boardNotFound ? (
           <div className="flex min-h-[calc(100vh-180px)] items-center justify-center px-4">
-            <div className="max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+            <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-8">
               <h2 className="text-xl font-semibold text-slate-800">
                 Board not found
               </h2>
+
               <p className="mt-2 text-sm text-slate-500">
                 This board may have been deleted or you may not have access to
                 it.
               </p>
+
               <Link
                 to="/"
                 className="mt-5 inline-flex rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
@@ -378,7 +400,7 @@ function BoardPage({ user, onBoardDataRefresh }) {
             onDragEnd={handleDragEnd}
           >
             <div className="mx-auto max-w-[1800px] overflow-x-auto overflow-y-visible pb-2">
-              <div className="relative z-0 flex min-h-[calc(100vh-120px)] items-start gap-4 overflow-visible">
+              <div className="relative z-0 flex min-h-[calc(100vh-120px)] w-max min-w-full items-start gap-3 overflow-visible sm:gap-4">
                 {lists.map((list) => {
                   const listCards = sortCardsByPosition(
                     cards.filter((card) => card.listId === list.id),
