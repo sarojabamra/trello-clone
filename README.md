@@ -100,7 +100,9 @@ The application will be available at the local URL shown in the terminal.
 
 ### Dashboard
 ![Dashboard](./screenshots/dashboard.png)
+![CreateBoardModal](./screenshots/creatboardmodal.png)
 
 ### Board
 ![Board](./screenshots/board.png)
+![EditCardModal](./screenshots/editcardmodal.png)
 
