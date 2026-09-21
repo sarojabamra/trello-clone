@@ -3,6 +3,7 @@ import { UserPlus } from "lucide-react";
 import trelloIcon from "../assets/trello-icon.png";
 import Button from "../components/common/Button";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function GoogleIcon() {
   return (
@@ -27,7 +28,8 @@ function GoogleIcon() {
   );
 }
 
-function Signup({ onLogin, onSignup }) {
+function Signup() {
+  const { handleGoogleLogin, handleEmailSignup } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
@@ -44,7 +46,7 @@ function Signup({ onLogin, onSignup }) {
     setIsSubmitting(true);
 
     try {
-      await onSignup(form);
+      await handleEmailSignup(form);
       navigate("/");
     } catch (err) {
       setError(err.message || "Failed to create account.");
@@ -55,7 +57,7 @@ function Signup({ onLogin, onSignup }) {
 
   const handleGoogleClick = async () => {
     try {
-      await onLogin();
+      await handleGoogleLogin();
       navigate("/");
     } catch (err) {
       setError(err.message || "Google signup failed.");

@@ -3,6 +3,7 @@ import { LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import trelloIcon from "../assets/trello-icon.png";
 import Button from "../components/common/Button";
+import { useAuth } from "../context/AuthContext";
 
 function GoogleIcon() {
   return (
@@ -27,7 +28,8 @@ function GoogleIcon() {
   );
 }
 
-function Login({ onLogin, onEmailLogin }) {
+function Login() {
+  const { handleGoogleLogin, handleEmailLogin } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -44,7 +46,7 @@ function Login({ onLogin, onEmailLogin }) {
     setIsSubmitting(true);
 
     try {
-      await onEmailLogin(form);
+      await handleEmailLogin(form);
       navigate("/");
     } catch (err) {
       setError(err.message || "Failed to sign in.");
@@ -55,7 +57,7 @@ function Login({ onLogin, onEmailLogin }) {
 
   const handleGoogleClick = async () => {
     try {
-      await onLogin();
+      await handleGoogleLogin();
       navigate("/");
     } catch (err) {
       setError(err.message || "Google login failed.");
