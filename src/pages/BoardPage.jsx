@@ -8,10 +8,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import {
-  ArrowDown,
-  ArrowLeft,
   MoreHorizontal,
-  Share,
   Star,
   Zap,
 } from "lucide-react";
@@ -42,7 +39,7 @@ import { FiUsers } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdFilterList } from "react-icons/md";
 
-function BoardPage({ user, onLogout, onBoardDataRefresh }) {
+function BoardPage({ user, onBoardDataRefresh }) {
   const { boardId } = useParams();
   const [boardName, setBoardName] = useState("My Board");
   const [lists, setLists] = useState([]);

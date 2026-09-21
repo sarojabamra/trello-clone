@@ -1,23 +1,13 @@
 import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
   increment,
   orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
   where,
 } from "firebase/firestore";
 
-import { db } from "../firebase/firebase";
 import {
   addDocument,
   deleteDocument,
   getDocuments,
-  runBatch,
   updateDocument,
 } from "../firebase/firestoreService";
 

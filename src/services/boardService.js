@@ -4,7 +4,6 @@ import {
   deleteDocument,
   getDocument,
   getDocuments,
-  runBatch,
   updateDocument,
 } from "../firebase/firestoreService";
 
@@ -44,25 +43,17 @@ export const deleteBoard = async (userId, boardId) => {
   const listDocs = await getDocuments(`users/${userId}/lists`, [
     where("boardId", "==", boardId),
   ]);
+
   const cardDocs = await getDocuments(`users/${userId}/cards`, [
     where("boardId", "==", boardId),
   ]);
 
-  const operations = [
-    { type: "delete", path: `users/${userId}/boards`, id: boardId },
-    ...listDocs.map((doc) => ({
-      type: "delete",
-      path: `users/${userId}/lists`,
-      id: doc.id,
-    })),
-    ...cardDocs.map((doc) => ({
-      type: "delete",
-      path: `users/${userId}/cards`,
-      id: doc.id,
-    })),
-  ];
+  await deleteDocument(`users/${userId}/boards`, boardId);
 
-  await runBatch(operations);
+  await Promise.all([
+    ...listDocs.map((doc) => deleteDocument(`users/${userId}/lists`, doc.id)),
+    ...cardDocs.map((doc) => deleteDocument(`users/${userId}/cards`, doc.id)),
+  ]);
 };
 
 export const updateBoard = async (userId, boardId, updates) => {

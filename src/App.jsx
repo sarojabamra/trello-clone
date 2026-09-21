@@ -172,8 +172,6 @@ function App() {
                   onCreateBoard={() => setIsCreateBoardModalOpen(true)}
                 />
                 <Dashboard
-                  user={user}
-                  onLogout={handleLogout}
                   boards={boards}
                   onDeleteBoard={handleDeleteBoard}
                   onCreateBoard={() => setIsCreateBoardModalOpen(true)}
@@ -194,7 +192,6 @@ function App() {
                 />
                 <BoardPage
                   user={user}
-                  onLogout={handleLogout}
                   onBoardDataRefresh={handleBoardDataRefresh}
                 />
               </>

@@ -4,8 +4,6 @@ import Loader from "../components/common/Loader";
 import BoardList from "../components/boards/BoardList";
 
 function Dashboard({
-  user,
-  onLogout,
   onDeleteBoard,
   boards,
   onCreateBoard,
