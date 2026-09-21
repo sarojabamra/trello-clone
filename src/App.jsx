@@ -43,6 +43,8 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [boards, setBoards] = useState([]);
   const [isCreateBoardModalOpen, setIsCreateBoardModalOpen] = useState(false);
+  const [boardDataNeedsRefresh, setBoardDataNeedsRefresh] = useState(false);
+  const [isLoadingBoards, setIsLoadingBoards] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -57,15 +59,24 @@ function App() {
     const fetchBoards = async () => {
       if (!user?.id) {
         setBoards([]);
+        setIsLoadingBoards(false);
         return;
       }
 
-      const userBoards = await getBoardsByUser(user.id);
-      setBoards(userBoards);
+      setIsLoadingBoards(true);
+      try {
+        const userBoards = await getBoardsByUser(user.id);
+        setBoards(userBoards);
+      } catch (error) {
+        console.error("Failed to fetch boards:", error);
+        setBoards([]);
+      } finally {
+        setIsLoadingBoards(false);
+      }
     };
 
     fetchBoards();
-  }, [user?.id]);
+  }, [user?.id, boardDataNeedsRefresh]);
 
   const handleGoogleLogin = async () => {
     const result = await signInWithPopup(auth, googleProvider);
@@ -103,6 +114,7 @@ function App() {
     const newBoard = await createBoard(user.id, { name });
     if (newBoard) {
       setBoards((prev) => [newBoard, ...prev]);
+      setBoardDataNeedsRefresh(true);
     }
   };
 
@@ -116,6 +128,11 @@ function App() {
 
     await deleteBoard(user.id, boardId);
     setBoards((prev) => prev.filter((board) => board.id !== boardId));
+    setBoardDataNeedsRefresh(true);
+  };
+
+  const handleBoardDataRefresh = () => {
+    setBoardDataNeedsRefresh((prev) => !prev);
   };
 
   return (
@@ -160,6 +177,7 @@ function App() {
                   boards={boards}
                   onDeleteBoard={handleDeleteBoard}
                   onCreateBoard={() => setIsCreateBoardModalOpen(true)}
+                  isLoadingBoards={isLoadingBoards}
                 />
               </>
             }
@@ -174,7 +192,11 @@ function App() {
                   onLogout={handleLogout}
                   onCreateBoard={() => setIsCreateBoardModalOpen(true)}
                 />
-                <BoardPage user={user} onLogout={handleLogout} />
+                <BoardPage
+                  user={user}
+                  onLogout={handleLogout}
+                  onBoardDataRefresh={handleBoardDataRefresh}
+                />
               </>
             }
           />

@@ -14,7 +14,7 @@ export function CardVisual({
   return (
     <div
       className={`group relative overflow-visible rounded-lg border border-slate-200 bg-white p-3 shadow-sm transition hover:border-slate-300 hover:shadow-md ${
-        isOverlay ? "pointer-events-none z-[999] shadow-2xl" : "z-0"
+        isOverlay ? "pointer-events-none z-999 shadow-2xl" : "z-0"
       }`}
     >
       <div className="flex items-start justify-between gap-2">
@@ -23,7 +23,7 @@ export function CardVisual({
         </p>
 
         {!isOverlay && (
-          <div className="relative z-[60] shrink-0 overflow-visible">
+          <div className="relative z-60 shrink-0 overflow-visible">
             <button
               type="button"
               onPointerDown={(event) => event.stopPropagation()}
@@ -37,7 +37,7 @@ export function CardVisual({
             </button>
 
             {isMenuOpen && (
-              <div className="absolute right-0 top-5 z-[1000] w-28 rounded-lg border border-slate-200 bg-white p-1 shadow-lg">
+              <div className="absolute right-0 top-5 z-1000 w-28 rounded-lg border border-slate-200 bg-white p-1 shadow-lg">
                 <button
                   type="button"
                   onClick={(event) => {
@@ -102,7 +102,7 @@ function CardItem({ card, onEdit, onDelete }) {
       {...listeners}
       className={`group relative overflow-visible rounded-lg ${
         isDragging ? "pointer-events-none opacity-100" : ""
-      } ${isMenuOpen ? "z-[80]" : "z-0"}`}
+      } ${isMenuOpen ? "z-80" : "z-0"}`}
     >
       <CardVisual
         card={card}

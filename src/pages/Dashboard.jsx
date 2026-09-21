@@ -3,9 +3,14 @@ import Button from "../components/common/Button";
 import Loader from "../components/common/Loader";
 import BoardList from "../components/boards/BoardList";
 
-function Dashboard({ user, boards, onDeleteBoard, onCreateBoard }) {
-  const isLoadingBoards = !user?.id && boards.length === 0;
-
+function Dashboard({
+  user,
+  onLogout,
+  onDeleteBoard,
+  boards,
+  onCreateBoard,
+  isLoadingBoards,
+}) {
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -22,7 +27,7 @@ function Dashboard({ user, boards, onDeleteBoard, onCreateBoard }) {
             </p>
           </div>
 
-          <Button onClick={() => onCreateBoard?.()} className="gap-2">
+          <Button onClick={onCreateBoard} className="gap-2">
             <Plus size={18} />
             Create Board
           </Button>

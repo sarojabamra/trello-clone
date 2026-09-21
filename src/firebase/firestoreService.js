@@ -13,7 +13,6 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-// Generic function to add a document
 export const addDocument = async (path, data) => {
   const collectionRef = collection(db, path);
   const docRef = await addDoc(collectionRef, {
@@ -24,7 +23,6 @@ export const addDocument = async (path, data) => {
   return { id: docRef.id, ...data };
 };
 
-// Generic function to get a document by ID
 export const getDocument = async (path, id) => {
   const docRef = doc(db, path, id);
   const snapshot = await getDoc(docRef);
@@ -32,7 +30,6 @@ export const getDocument = async (path, id) => {
   return { id: snapshot.id, ...snapshot.data() };
 };
 
-// Generic function to get documents with optional queries
 export const getDocuments = async (path, queryConstraints = []) => {
   const collectionRef = collection(db, path);
   const q = query(collectionRef, ...queryConstraints);
@@ -43,7 +40,6 @@ export const getDocuments = async (path, queryConstraints = []) => {
   }));
 };
 
-// Generic function to update a document
 export const updateDocument = async (path, id, updates) => {
   const docRef = doc(db, path, id);
   await updateDoc(docRef, {
@@ -52,13 +48,11 @@ export const updateDocument = async (path, id, updates) => {
   });
 };
 
-// Generic function to delete a document
 export const deleteDocument = async (path, id) => {
   const docRef = doc(db, path, id);
   await deleteDoc(docRef);
 };
 
-// Generic function for batch operations
 export const runBatch = async (operations) => {
   const batch = writeBatch(db);
   operations.forEach((op) => {

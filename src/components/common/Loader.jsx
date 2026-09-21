@@ -1,9 +1,9 @@
-function Loader({ message = "Loading..." }) {
+function Loader({ message = "Loading...", textColor = "default" }) {
   return (
     <div className="flex min-h-52 items-center justify-center px-4 py-10">
       <div className="flex flex-col items-center gap-3 text-slate-600">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600" />
-        <p className="text-sm font-medium text-slate-600">{message}</p>
+        <p className={`text-sm font-medium ${textColor === "white" ? `text-white` : `text-slate-600`}`}>{message}</p>
       </div>
     </div>
   );

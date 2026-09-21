@@ -20,7 +20,7 @@ function AddList({ onAdd }) {
     return (
       <button
         onClick={() => setIsAdding(true)}
-        className="flex h-fit w-[290px] shrink-0 items-center gap-2 rounded-xl bg-white/30 px-4 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-white/40"
+        className="flex h-fit w-72.5 shrink-0 items-center gap-2 rounded-xl bg-white/30 px-4 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-white/40"
       >
         <Plus size={18} />
         Add another list
@@ -31,7 +31,7 @@ function AddList({ onAdd }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-fit w-[290px] shrink-0 rounded-xl bg-[#f1f2f4]/95 p-3 shadow-sm"
+      className="h-fit w-72.5 shrink-0 rounded-xl bg-[#f1f2f4]/95 p-3 shadow-sm"
     >
       <input
         autoFocus

@@ -42,7 +42,7 @@ import { FiUsers } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdFilterList } from "react-icons/md";
 
-function BoardPage({ user, onLogout }) {
+function BoardPage({ user, onLogout, onBoardDataRefresh }) {
   const { boardId } = useParams();
   const [boardName, setBoardName] = useState("My Board");
   const [lists, setLists] = useState([]);
@@ -112,6 +112,7 @@ function BoardPage({ user, onLogout }) {
     const newList = await createList(user.id, boardId, name);
     if (newList) {
       setLists((prev) => [...prev, newList]);
+      onBoardDataRefresh();
     }
   };
 
@@ -149,6 +150,7 @@ function BoardPage({ user, onLogout }) {
     await deleteList(user.id, boardId, listId);
     setLists((prev) => prev.filter((list) => list.id !== listId));
     setCards((prev) => prev.filter((card) => card.listId !== listId));
+    onBoardDataRefresh();
   };
 
   const handleEditList = async (list) => {
@@ -352,7 +354,7 @@ function BoardPage({ user, onLogout }) {
 
       <main className="px-3 pb-8 pt-4 sm:px-6 lg:px-8">
         {isLoadingBoard ? (
-          <Loader message="Loading board details..." />
+          <Loader textColor="white" message="Loading board details..." />
         ) : boardNotFound ? (
           <div className="flex min-h-[calc(100vh-180px)] items-center justify-center px-4">
             <div className="max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">

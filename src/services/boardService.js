@@ -35,10 +35,7 @@ export const getBoardById = async (userId, boardId) => {
 
 export const createBoard = async (userId, { name }) => {
   if (!userId || !name?.trim()) return null;
-  return addDocument(`users/${userId}/boards`, {
-    name: name.trim(),
-    listCount: 0,
-  });
+  return addDocument(`users/${userId}/boards`, { name: name.trim() });
 };
 
 export const deleteBoard = async (userId, boardId) => {
