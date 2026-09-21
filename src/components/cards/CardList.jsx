@@ -4,7 +4,13 @@ import {
 } from "@dnd-kit/sortable";
 import CardItem from "./CardItem";
 
-function CardList({ cards, onEditCard, onDeleteCard }) {
+function CardList({
+  cards,
+  onDeleteCard,
+  onOpenCard,
+  onUpdateCard,
+  onToggleComplete,
+}) {
   return (
     <SortableContext
       items={cards.map((card) => card.id)}
@@ -15,8 +21,10 @@ function CardList({ cards, onEditCard, onDeleteCard }) {
           <CardItem
             key={card.id}
             card={card}
-            onEdit={() => onEditCard(card)}
+            onOpen={() => onOpenCard(card)}
             onDelete={() => onDeleteCard(card.id)}
+            onUpdate={(patch) => onUpdateCard(card.id, patch)}
+            onToggleComplete={() => onToggleComplete(card.id)}
           />
         ))}
       </div>

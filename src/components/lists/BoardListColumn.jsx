@@ -10,8 +10,10 @@ function BoardListColumn({
   onAddCard,
   onEditList,
   onDeleteList,
-  onEditCard,
   onDeleteCard,
+  onOpenCard,
+  onUpdateCard,
+  onToggleComplete,
 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: list.id,
@@ -20,8 +22,8 @@ function BoardListColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`relative z-0 flex w-72.5 shrink-0 flex-col overflow-visible rounded-xl border border-white/20 bg-[#f1f2f4]/95 p-3 shadow-sm transition ${
-        isOver ? "border-blue-300 bg-[#edf3ff]" : ""
+      className={`relative z-0 flex w-72.5 shrink-0 flex-col overflow-visible rounded-xl border border-white/20 bg-slate-100/95 p-3 shadow-sm transition ${
+        isOver ? "border-blue-300 bg-blue-50" : ""
       }`}
     >
       <ListHeader
@@ -34,8 +36,10 @@ function BoardListColumn({
       <div className="overflow-visible">
         <CardList
           cards={cards}
-          onEditCard={onEditCard}
           onDeleteCard={onDeleteCard}
+          onOpenCard={onOpenCard}
+          onUpdateCard={onUpdateCard}
+          onToggleComplete={onToggleComplete}
         />
       </div>
 

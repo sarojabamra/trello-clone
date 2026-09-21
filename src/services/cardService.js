@@ -5,13 +5,15 @@ import {
   updateDocument,
 } from "../firebase/firestoreService";
 import { orderBy, where } from "firebase/firestore";
+import { normalizeCard } from "../utils/cardNormalize";
 
 export const getCardsByBoard = async (userId, boardId) => {
   if (!userId || !boardId) return [];
-  return getDocuments(`users/${userId}/cards`, [
+  const cards = await getDocuments(`users/${userId}/cards`, [
     where("boardId", "==", boardId),
     orderBy("position", "asc"),
   ]);
+  return cards.map(normalizeCard);
 };
 
 export const createCard = async (
@@ -31,13 +33,26 @@ export const createCard = async (
     title: title.trim(),
     description: description?.trim() || "",
     position: listCards.length,
+    labels: [],
+    dueDate: null,
+    completed: false,
+    checklist: [],
   };
-  return addDocument(`users/${userId}/cards`, cardData);
+  return normalizeCard(
+    await addDocument(`users/${userId}/cards`, cardData),
+  );
 };
+
+const sanitizeUpdates = (updates = {}) =>
+  Object.fromEntries(
+    Object.entries(updates).filter(([, value]) => value !== undefined),
+  );
 
 export const updateCard = async (userId, cardId, updates) => {
   if (!userId || !cardId) return;
-  await updateDocument(`users/${userId}/cards`, cardId, updates);
+  const sanitized = sanitizeUpdates(updates);
+  if (Object.keys(sanitized).length === 0) return;
+  await updateDocument(`users/${userId}/cards`, cardId, sanitized);
 };
 
 export const deleteCard = async (userId, cardId) => {

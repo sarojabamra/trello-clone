@@ -1,9 +1,15 @@
 const variants = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+  primary:
+    "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-600/30",
   secondary:
-    "bg-slate-200 text-slate-700 hover:bg-slate-300 focus:ring-slate-400",
-  danger: "bg-red-50 text-red-600 hover:bg-red-100 focus:ring-red-400",
-  ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+    "bg-slate-200 text-slate-700 hover:bg-slate-300 focus:ring-slate-400/40",
+  neutral:
+    "bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 focus:ring-slate-400/40",
+  outline:
+    "border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 focus:ring-slate-400/40",
+  danger: "bg-red-50 text-red-600 hover:bg-red-100 focus:ring-red-400/40",
+  ghost:
+    "text-slate-600 hover:bg-slate-900/5 hover:text-slate-900 focus:ring-slate-400/40",
 };
 
 function Button({

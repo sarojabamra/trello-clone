@@ -1,4 +1,5 @@
 import { orderBy, where } from "firebase/firestore";
+import { normalizeBoardThemeId } from "../constants/boardThemes";
 import {
   addDocument,
   deleteDocument,
@@ -32,9 +33,12 @@ export const getBoardById = async (userId, boardId) => {
   return getDocument(`users/${userId}/boards`, boardId);
 };
 
-export const createBoard = async (userId, { name }) => {
+export const createBoard = async (userId, { name, theme }) => {
   if (!userId || !name?.trim()) return null;
-  return addDocument(`users/${userId}/boards`, { name: name.trim() });
+  return addDocument(`users/${userId}/boards`, {
+    name: name.trim(),
+    theme: normalizeBoardThemeId(theme),
+  });
 };
 
 export const deleteBoard = async (userId, boardId) => {

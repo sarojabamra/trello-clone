@@ -60,8 +60,8 @@ function App() {
       <CreateBoardModal
         isOpen={isCreateBoardModalOpen}
         onClose={() => setIsCreateBoardModalOpen(false)}
-        onCreate={async (name) => {
-          await onCreateBoardSubmit(name);
+        onCreate={async ({ name, theme }) => {
+          await onCreateBoardSubmit({ name, theme });
           setIsCreateBoardModalOpen(false);
         }}
       />

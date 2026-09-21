@@ -2,8 +2,11 @@ import { ArrowRight, Trash2 } from "lucide-react";
 import { FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+import { getBoardCardBackgroundClass } from "../../constants/boardThemes";
+
 function BoardCard({ board, onDeleteBoard }) {
   const navigate = useNavigate();
+  const cardBgClass = getBoardCardBackgroundClass(board.theme);
 
   const handleDelete = (event) => {
     event.stopPropagation();
@@ -13,7 +16,7 @@ function BoardCard({ board, onDeleteBoard }) {
   return (
     <div
       onClick={() => navigate(`/board/${board.id}`)}
-      className="group relative min-h-36 cursor-pointer overflow-hidden rounded-xl bg-linear-to-br from-blue-600 to-indigo-700 p-5 text-left text-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+      className={`group relative min-h-36 cursor-pointer overflow-hidden rounded-xl p-5 text-left text-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${cardBgClass}`}
     >
       <div className="relative flex items-start justify-between gap-4">
         <FaList size={22} className="mb-8 text-white" />

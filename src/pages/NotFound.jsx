@@ -11,7 +11,7 @@ function NotFound() {
 
         <h1 className="mt-6 text-5xl font-bold text-slate-900">404</h1>
 
-        <h2 className="mt-2 text-xl font-semibold">Page not found</h2>
+        <h2 className="mt-2 text-xl font-semibold text-slate-900">Page not found</h2>
 
         <p className="mt-2 text-sm text-slate-500">
           The page you're looking for doesn't exist.

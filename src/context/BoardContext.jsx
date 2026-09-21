@@ -4,6 +4,7 @@ import {
   getBoardsByUser,
   deleteBoard,
 } from "../services/boardService";
+import { DEFAULT_BOARD_THEME } from "../constants/boardThemes";
 import { useAuth } from "./AuthContext";
 
 const BoardContext = createContext(null);
@@ -40,12 +41,18 @@ export function BoardContextProvider({ children }) {
     fetchBoards();
   }, [user?.id, boardDataNeedsRefresh]);
 
-  const handleCreateBoard = async (name) => {
-    if (!user?.id) return;
+  const handleCreateBoard = async ({ name, theme }) => {
+    if (!user?.id || !name?.trim()) return;
 
-    const newBoard = await createBoard(user.id, { name });
+    const newBoard = await createBoard(user.id, {
+      name: name.trim(),
+      theme: theme ?? DEFAULT_BOARD_THEME,
+    });
     if (newBoard) {
-      setBoards((prev) => [newBoard, ...prev]);
+      setBoards((prev) => [
+        { ...newBoard, theme: newBoard.theme ?? theme ?? DEFAULT_BOARD_THEME },
+        ...prev,
+      ]);
       setBoardDataNeedsRefresh((prev) => !prev);
     }
   };

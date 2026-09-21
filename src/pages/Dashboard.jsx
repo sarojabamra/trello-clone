@@ -9,21 +9,19 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="ui-container py-8">
         <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <p className="text-sm font-medium text-blue-600">Dashboard</p>
+            <p className="ui-eyebrow">Dashboard</p>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
-              Your boards
-            </h1>
+            <h1 className="ui-page-title mt-1">Your boards</h1>
 
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="ui-muted mt-2">
               Organize your projects and keep track of your tasks.
             </p>
           </div>
 
-          <Button onClick={onCreateBoard} className="gap-2">
+          <Button variant="primary" onClick={onCreateBoard} className="gap-2">
             <Plus size={18} />
             Create Board
           </Button>

@@ -7,7 +7,7 @@ function BoardList({ boards, onDeleteBoard }) {
       <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
         <FolderOpen size={40} className="mx-auto text-slate-300" />
 
-        <h3 className="mt-4 font-semibold text-slate-800">No boards yet</h3>
+        <h3 className="mt-4 font-semibold text-slate-900">No boards yet</h3>
 
         <p className="mt-1 text-sm text-slate-500">
           Create your first board to get started.

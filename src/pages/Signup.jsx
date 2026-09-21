@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import trelloIcon from "../assets/trello-icon.png";
 import Button from "../components/common/Button";
+import Input from "../components/common/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -65,80 +66,60 @@ function Signup() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-8">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <div className="ui-auth-shell">
+      <div className="ui-auth-card">
         <div className="mb-6 flex items-center justify-center gap-3">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg">
             <img
               src={trelloIcon}
               alt="Trello"
               className="h-full w-full object-contain"
             />
           </div>
-          <span className="text-3xl font-bold tracking-tight text-slate-800">
-            Trello
-          </span>
+          <span className="ui-brand-title">Trello Clone</span>
         </div>
 
         <div className="mb-6 text-center">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Create your account
-          </h2>
+          <h2 className="ui-section-title">Create your account</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">
-              Full name <span className="text-red-700">*</span>
-            </label>
-            <input
-              name="name"
-              type="text"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              required
-            />
-          </div>
+          <Input
+            id="signup-name"
+            name="name"
+            type="text"
+            label="Full name"
+            required
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Enter your full name"
+          />
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">
-              Email <span className="text-red-700">*</span>
-            </label>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              required
-            />
-          </div>
+          <Input
+            id="signup-email"
+            name="email"
+            type="email"
+            label="Email"
+            required
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+          />
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">
-              Password <span className="text-red-700">*</span>
-            </label>
-            <input
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Create a password"
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              required
-            />
-          </div>
+          <Input
+            id="signup-password"
+            name="password"
+            type="password"
+            label="Password"
+            required
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Create a password"
+          />
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <Button
-            type="submit"
-            className="w-full bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-60"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
             <UserPlus size={16} className="mr-2" />
             {isSubmitting ? "Creating account..." : "Sign up"}
           </Button>
@@ -156,19 +137,17 @@ function Signup() {
         </div>
 
         <Button
+          variant="outline"
           onClick={handleGoogleClick}
-          className="w-full gap-2 border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50"
+          className="w-full gap-2"
         >
           <GoogleIcon />
           Google
         </Button>
 
-        <p className="mt-6 text-center text-sm text-slate-500">
+        <p className="ui-muted mt-6 text-center">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-medium text-blue-600 hover:text-blue-500"
-          >
+          <Link to="/login" className="ui-link">
             Log in
           </Link>
         </p>

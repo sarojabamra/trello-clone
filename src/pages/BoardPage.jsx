@@ -13,9 +13,11 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Loader from "../components/common/Loader";
+import CardDetailModal from "../components/cards/CardDetailModal";
 import { CardVisual } from "../components/cards/CardItem";
 import BoardListColumn from "../components/lists/BoardListColumn";
 import AddList from "../components/lists/AddList";
+import RenameListModal from "../components/lists/RenameListModal";
 import { getBoardById } from "../services/boardService";
 import {
   createList,
@@ -36,17 +38,22 @@ import { IoIosArrowDown } from "react-icons/io";
 import { MdFilterList } from "react-icons/md";
 import { useAuth } from "../context/AuthContext";
 import { useBoard } from "../context/BoardContext";
+import { normalizeCard } from "../utils/cardNormalize";
+import { getBoardPageBackgroundClass } from "../constants/boardThemes";
 
 function BoardPage() {
   const { user } = useAuth();
   const { onBoardDataRefresh } = useBoard();
   const { boardId } = useParams();
   const [boardName, setBoardName] = useState("My Board");
+  const [boardThemeId, setBoardThemeId] = useState(null);
   const [lists, setLists] = useState([]);
   const [cards, setCards] = useState([]);
   const [isLoadingBoard, setIsLoadingBoard] = useState(true);
   const [boardNotFound, setBoardNotFound] = useState(false);
   const [activeCardId, setActiveCardId] = useState(null);
+  const [selectedCardId, setSelectedCardId] = useState(null);
+  const [renameList, setRenameList] = useState(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -87,6 +94,7 @@ function BoardPage() {
         }
 
         setBoardName(board.name);
+        setBoardThemeId(board.theme ?? null);
         setLists(boardLists);
         setCards(boardCards);
       } catch (error) {
@@ -139,6 +147,7 @@ function BoardPage() {
 
     await deleteCard(user.id, cardId);
     setCards((prev) => prev.filter((card) => card.id !== cardId));
+    setSelectedCardId((current) => (current === cardId ? null : current));
   };
 
   const handleDeleteList = async (listId) => {
@@ -150,33 +159,59 @@ function BoardPage() {
     onBoardDataRefresh();
   };
 
-  const handleEditList = async (list) => {
-    const newName = window.prompt("Enter new list name:", list.name);
-    if (!newName?.trim() || !user?.id) return;
+  const handleEditList = (list) => {
+    setRenameList(list);
+  };
 
-    const trimmed = newName.trim();
-    await updateList(user.id, list.id, { name: trimmed });
+  const handleSaveListName = async (trimmed) => {
+    if (!user?.id || !renameList?.id || !trimmed) return;
+
+    await updateList(user.id, renameList.id, { name: trimmed });
     setLists((prev) =>
       prev.map((item) =>
-        item.id === list.id ? { ...item, name: trimmed } : item,
+        item.id === renameList.id ? { ...item, name: trimmed } : item,
       ),
     );
   };
 
-  const handleEditCard = async (card) => {
-    const newTitle = window.prompt("Enter new card title:", card.title);
-    if (!newTitle?.trim() || !user?.id) return;
+  const handleOpenCard = (card) => {
+    setSelectedCardId(card.id);
+  };
 
-    const trimmed = newTitle.trim();
-    await updateCard(user.id, card.id, { title: trimmed });
+  const handleUpdateCard = async (cardId, updates) => {
+    if (!user?.id) return;
+
+    await updateCard(user.id, cardId, updates);
     setCards((prev) =>
       prev.map((item) =>
-        item.id === card.id ? { ...item, title: trimmed } : item,
+        item.id === cardId ? normalizeCard({ ...item, ...updates }) : item,
+      ),
+    );
+  };
+
+  const handlePatchCard = async (cardId, patch) => {
+    if (!user?.id || !patch || Object.keys(patch).length === 0) return;
+    await handleUpdateCard(cardId, patch);
+  };
+
+  const handleToggleComplete = async (cardId) => {
+    const card = cards.find((item) => item.id === cardId);
+    if (!card || !user?.id) return;
+
+    const completed = !card.completed;
+    await updateCard(user.id, cardId, { completed });
+    setCards((prev) =>
+      prev.map((item) =>
+        item.id === cardId ? { ...item, completed } : item,
       ),
     );
   };
 
   const activeCard = cards.find((card) => card.id === activeCardId) ?? null;
+  const selectedCard =
+    cards.find((card) => card.id === selectedCardId) ?? null;
+  const selectedListName =
+    lists.find((list) => list.id === selectedCard?.listId)?.name ?? "";
 
   const handleDragStart = ({ active }) => {
     setActiveCardId(active.id);
@@ -286,19 +321,21 @@ function BoardPage() {
     );
   };
 
+  const pageBgClass = getBoardPageBackgroundClass(boardThemeId);
+
   return (
-    <div className="h-screen flex flex-col bg-linear-to-r from-blue-700 via-blue-600 to-cyan-500 text-slate-800">
+    <div className={`flex h-screen flex-col text-slate-900 ${pageBgClass}`}>
       <header className="bg-slate-600/50 px-3 py-3 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-[1800px] items-center justify-between gap-3">
+        <div className="mx-auto flex w-full max-w-[1800px] items-center justify-between gap-3">
           <div className="flex min-w-0 flex-1 items-center">
             <div className="flex min-w-0 items-center gap-2">
-              <h1 className="-ms-1 truncate text-lg font-bold text-white sm:text-xl">
+              <h1 className="-ms-1 truncate text-base font-bold text-white sm:text-xl">
                 {boardName || "New Board"}
               </h1>
 
               <button
                 type="button"
-                className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-white transition hover:bg-white/10"
+                className="inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-white transition hover:bg-white/10"
                 aria-label="Board options"
               >
                 <RiBarChart2Line className="rotate-180" size={19} />
@@ -309,7 +346,7 @@ function BoardPage() {
 
           <div className="flex shrink-0 items-center gap-1 text-white">
             {user && (
-              <div className="group relative mx-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700">
+              <div className="ui-user-avatar-sm group relative mx-1">
                 {user.name
                   ?.split(" ")
                   .filter(Boolean)
@@ -317,54 +354,57 @@ function BoardPage() {
                   .map((part) => part[0]?.toUpperCase())
                   .join("") || "U"}
 
-                <span className="pointer-events-none absolute top-full left-1/2 z-50 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-[10px] text-white opacity-0 shadow-md transition group-hover:opacity-100">
+                <span className="ui-tooltip text-[10px]">
                   {user.name || "User"}
                 </span>
               </div>
             )}
 
             <button
-              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 sm:flex"
+              className="ui-board-icon-btn hidden sm:flex"
               aria-label="Integrations"
             >
               <LuPlug size={18} />
             </button>
 
             <button
-              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 md:flex"
+              className="ui-board-icon-btn hidden md:flex"
               aria-label="Automation"
             >
               <Zap size={18} />
             </button>
 
             <button
-              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 sm:flex"
+              className="ui-board-icon-btn hidden sm:flex"
               aria-label="Filter"
             >
               <MdFilterList size={20} />
             </button>
 
             <button
-              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 lg:flex"
+              className="ui-board-icon-btn hidden lg:flex"
               aria-label="Favorite"
             >
               <Star size={18} />
             </button>
 
             <button
-              className="hidden h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10 md:flex"
+              className="ui-board-icon-btn hidden md:flex"
               aria-label="Members"
             >
               <FiUsers size={18} />
             </button>
 
-            <button className="mx-1 inline-flex items-center gap-1.5 rounded-md bg-slate-300 px-2.5 py-1.5 text-sm font-medium text-black transition hover:bg-white sm:px-3">
+            <button
+              type="button"
+              className="mx-1 inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-2.5 py-1.5 text-sm font-medium text-white transition hover:bg-white/30 sm:px-3"
+            >
               <BsPersonPlus size={17} />
               <span className="hidden sm:inline">Share</span>
             </button>
 
             <button
-              className="flex h-8 w-8 items-center justify-center rounded-md transition hover:bg-white/10"
+              className="ui-board-icon-btn flex"
               aria-label="More options"
             >
               <MoreHorizontal size={18} />
@@ -379,7 +419,7 @@ function BoardPage() {
         ) : boardNotFound ? (
           <div className="flex min-h-[calc(100vh-180px)] items-center justify-center px-4">
             <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-8">
-              <h2 className="text-xl font-semibold text-slate-800">
+              <h2 className="text-xl font-semibold text-slate-900">
                 Board not found
               </h2>
 
@@ -390,7 +430,7 @@ function BoardPage() {
 
               <Link
                 to="/"
-                className="mt-5 inline-flex rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+                className="mt-5 inline-flex rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
               >
                 Back to dashboard
               </Link>
@@ -403,7 +443,7 @@ function BoardPage() {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
-            <div className="mx-auto max-w-[1800px] h-full overflow-x-auto pb-2">
+            <div className="mx-auto h-full max-w-[1800px] overflow-x-auto pb-2">
               <div className="relative z-0 flex h-full w-max min-w-full items-start gap-3 overflow-visible sm:gap-4">
                 {lists.map((list) => {
                   const listCards = sortCardsByPosition(
@@ -418,8 +458,10 @@ function BoardPage() {
                       onAddCard={handleAddCard}
                       onEditList={handleEditList}
                       onDeleteList={handleDeleteList}
-                      onEditCard={handleEditCard}
                       onDeleteCard={handleDeleteCard}
+                      onOpenCard={handleOpenCard}
+                      onUpdateCard={handlePatchCard}
+                      onToggleComplete={handleToggleComplete}
                     />
                   );
                 })}
@@ -434,6 +476,23 @@ function BoardPage() {
           </DndContext>
         )}
       </main>
+
+      <CardDetailModal
+        key={selectedCardId ?? "closed"}
+        isOpen={Boolean(selectedCard)}
+        card={selectedCard}
+        listName={selectedListName}
+        onClose={() => setSelectedCardId(null)}
+        onSave={handleUpdateCard}
+        onDelete={handleDeleteCard}
+      />
+
+      <RenameListModal
+        isOpen={Boolean(renameList)}
+        list={renameList}
+        onClose={() => setRenameList(null)}
+        onSave={handleSaveListName}
+      />
     </div>
   );
 }

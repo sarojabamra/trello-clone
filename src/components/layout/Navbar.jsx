@@ -21,7 +21,7 @@ function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-[1800px] items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="ui-container flex h-14 items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
           <Link
             to="/"
@@ -46,7 +46,7 @@ function Navbar() {
                 type="text"
                 placeholder="Search"
                 aria-label="Search"
-                className="rounded-lg! py-1! pl-10! pr-3! text-slate-700 placeholder:text-slate-400 focus:border-blue-500! focus:ring-blue-100!"
+                className=" pl-10!"
               />
               <Search
                 size={16}
@@ -54,13 +54,12 @@ function Navbar() {
               />
             </div>
 
-            <button
+            <Button
               type="button"
               onClick={onCreateBoard}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-1 text-sm text-white shadow-sm transition hover:bg-blue-500"
             >
               Create
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -69,11 +68,11 @@ function Navbar() {
             <div className="relative hidden items-center gap-2 sm:flex">
               <div
                 title={user.name || "User"}
-                className="group relative flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700"
+                className="ui-user-avatar group relative"
               >
                 {getUserInitials(user.name)}
 
-                <span className="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs text-white opacity-0 shadow-md transition group-hover:opacity-100">
+                <span className="ui-tooltip">
                   {user.name || "User"}
                 </span>
               </div>

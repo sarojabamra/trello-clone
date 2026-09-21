@@ -1,6 +1,8 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
+import Button from "../common/Button";
+
 function AddList({ onAdd }) {
   const [isAdding, setIsAdding] = useState(false);
   const [name, setName] = useState("");
@@ -19,6 +21,7 @@ function AddList({ onAdd }) {
   if (!isAdding) {
     return (
       <button
+        type="button"
         onClick={() => setIsAdding(true)}
         className="flex h-fit w-72.5 shrink-0 items-center gap-2 rounded-xl bg-white/30 px-4 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-white/40"
       >
@@ -31,34 +34,32 @@ function AddList({ onAdd }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-fit w-72.5 shrink-0 rounded-xl bg-[#f1f2f4]/95 p-3 shadow-sm"
+      className="h-fit w-72.5 shrink-0 rounded-xl bg-slate-100/95 p-3 shadow-sm"
     >
       <input
         autoFocus
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Enter list name..."
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+        className="ui-input"
       />
 
       <div className="mt-2 flex gap-2">
-        <button
-          type="submit"
-          className="rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700"
-        >
+        <Button type="submit" className="px-3 py-1.5 text-xs">
           Add List
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
+          variant="neutral"
+          className="px-3 py-1.5 text-xs"
           onClick={() => {
             setIsAdding(false);
             setName("");
           }}
-          className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200"
         >
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );
