@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import trelloIcon from "../../assets/trello-icon.png";
 import Button from "../common/Button";
 import Input from "../common/Input";
+import { useAuth } from "../../context/AuthContext";
+import { useBoard } from "../../context/BoardContext";
 
-function Navbar({ user, onLogout, onCreateBoard }) {
+function Navbar() {
+  const { user, handleLogout } = useAuth();
+  const { onCreateBoard } = useBoard();
+
   const getUserInitials = (name = "") => {
     const parts = name.trim().split(/\s+/).filter(Boolean);
 
@@ -75,7 +80,11 @@ function Navbar({ user, onLogout, onCreateBoard }) {
             </div>
           )}
 
-          <Button variant="ghost" onClick={onLogout} className="gap-2  sm:px-3">
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            className="gap-2  sm:px-3"
+          >
             <LogOut size={17} />
             <span className="hidden sm:inline">Logout</span>
           </Button>

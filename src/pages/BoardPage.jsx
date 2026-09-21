@@ -34,8 +34,12 @@ import { LuPlug } from "react-icons/lu";
 import { FiUsers } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdFilterList } from "react-icons/md";
+import { useAuth } from "../context/AuthContext";
+import { useBoard } from "../context/BoardContext";
 
-function BoardPage({ user, onBoardDataRefresh }) {
+function BoardPage() {
+  const { user } = useAuth();
+  const { onBoardDataRefresh } = useBoard();
   const { boardId } = useParams();
   const [boardName, setBoardName] = useState("My Board");
   const [lists, setLists] = useState([]);
@@ -283,8 +287,8 @@ function BoardPage({ user, onBoardDataRefresh }) {
   };
 
   return (
-    <div className="flex h-dvh w-full flex-col overflow-hidden bg-linear-to-r from-blue-700 via-blue-600 to-cyan-500 text-slate-800">
-      <header className="shrink-0 bg-slate-600/50 px-3 py-3 sm:px-6 lg:px-8">
+    <div className="h-screen flex flex-col bg-linear-to-r from-blue-700 via-blue-600 to-cyan-500 text-slate-800">
+      <header className="bg-slate-600/50 px-3 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1800px] items-center justify-between gap-3">
           <div className="flex min-w-0 flex-1 items-center">
             <div className="flex min-w-0 items-center gap-2">
@@ -369,13 +373,11 @@ function BoardPage({ user, onBoardDataRefresh }) {
         </div>
       </header>
 
-      <main className="min-h-0 flex-1 overflow-hidden px-3 py-4 sm:px-6 lg:px-8">
+      <main className="flex-1 overflow-hidden px-3 pb-8 pt-4 sm:px-6 lg:px-8">
         {isLoadingBoard ? (
-          <div className="flex h-full items-center justify-center">
-            <Loader textColor="white" message="Loading board details..." />
-          </div>
+          <Loader textColor="white" message="Loading board details..." />
         ) : boardNotFound ? (
-          <div className="flex h-full items-center justify-center px-4">
+          <div className="flex min-h-[calc(100vh-180px)] items-center justify-center px-4">
             <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-8">
               <h2 className="text-xl font-semibold text-slate-800">
                 Board not found
@@ -401,8 +403,8 @@ function BoardPage({ user, onBoardDataRefresh }) {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
-            <div className="mx-auto h-full max-w-[1800px] overflow-x-auto overflow-y-hidden">
-              <div className="flex h-full w-max min-w-full items-start gap-3 sm:gap-4">
+            <div className="mx-auto max-w-[1800px] h-full overflow-x-auto pb-2">
+              <div className="relative z-0 flex h-full w-max min-w-full items-start gap-3 overflow-visible sm:gap-4">
                 {lists.map((list) => {
                   const listCards = sortCardsByPosition(
                     cards.filter((card) => card.listId === list.id),

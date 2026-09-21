@@ -2,13 +2,11 @@ import { Plus } from "lucide-react";
 import Button from "../components/common/Button";
 import Loader from "../components/common/Loader";
 import BoardList from "../components/boards/BoardList";
+import { useBoard } from "../context/BoardContext";
 
-function Dashboard({
-  onDeleteBoard,
-  boards,
-  onCreateBoard,
-  isLoadingBoards,
-}) {
+function Dashboard() {
+  const { boards, isLoadingBoards, onDeleteBoard, onCreateBoard } = useBoard();
+
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
