@@ -22,8 +22,6 @@ const syncUserFromFirebase = (firebaseUser) => {
     name:
       firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "User",
     email: firebaseUser.email,
-    photoURL: firebaseUser.photoURL,
-    provider: firebaseUser.providerData?.[0]?.providerId || "password",
   };
 };
 

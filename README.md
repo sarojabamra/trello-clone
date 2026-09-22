@@ -9,12 +9,19 @@ Deployment link: https://trello-clone-dun.vercel.app
 ## Features
 
 * Email/password and Google authentication
-* Dashboard to view all boards
+* Dashboard to view all boards, with dynamic list counts
 * Create and delete boards
 * Create, edit, and delete lists
 * Create, edit, and delete cards
+* Theme Selector for boards
+* Mark tasks/cards as completed with a checkbox appearing on hover
+* Coloured labels to label and mark tasks
+* Feature to add a due date to tasks
+* Add subtasks/checklist to a card, check progress with a progress tracker
+* Card description editing in detail view
 * Drag and drop cards between lists
 * Responsive layout
+* Centralized state management using React Context for user and board data
 * Firebase Firestore for storing application data
 
 ## Tech Stack

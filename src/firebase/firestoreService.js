@@ -51,18 +51,3 @@ export const deleteDocument = async (path, id) => {
   const docRef = doc(db, path, id);
   await deleteDoc(docRef);
 };
-
-export const runBatch = async (operations) => {
-  const batch = writeBatch(db);
-  operations.forEach((op) => {
-    const docRef = doc(db, op.path, op.id);
-    if (op.type === "delete") {
-      batch.delete(docRef);
-    } else if (op.type === "update") {
-      batch.update(docRef, op.data);
-    } else if (op.type === "set") {
-      batch.set(docRef, op.data);
-    }
-  });
-  await batch.commit();
-};
